@@ -25,31 +25,31 @@ const mystery5 = [4, 9, 1, 3, 5, 4, 0, 4, 6, 3, 0, 7, 2, 5, 2, 3];
 const batch = [valid1, valid2, valid3, valid4, valid5, invalid1, invalid2, invalid3, invalid4, invalid5, mystery1, mystery2, mystery3, mystery4, mystery5];
 
 // -----------------------------------------------------------------------------
-// Add your functions below: Returns true for valid credit cards and false for invalid credit cards.
-// The function should not mutate the values of the original array.
 
 const validateCred = arr => {
-  const cardNumber = [arr[arr.length - 1]]; // Add the last digit of the passed in array to a new array
-  if (arr.length % 2 === 0) { // If the array has an even number of elements
-    for (let i = arr.length - 2; i >= 0; i--) { // Loop through array
-      if (i % 2 === 0) { // If current index is Even
-        // Multiple number at index by two and subtract 9 if it's value is 10 or more else multiply by two: add it to the new array
+  // Add the last digit of the passed in array to a new array
+  const cardNumber = [arr[arr.length - 1]];
+
+  // If the array has an even number of elements
+  if (arr.length % 2 === 0) {
+    for (let i = arr.length - 2; i >= 0; i--) {
+      // For EVEN indices, double value at index, if 10 of more, subtract 9 - unshift. For ODD indicies, add value at index to array.
+      if (i % 2 === 0) {
         arr[i] * 2 > 9 ? cardNumber.unshift(arr[i] * 2 - 9) : cardNumber.unshift(arr[i] * 2)
       } else {
-        cardNumber.unshift(arr[i]); // If index id odd, simply add number at index to new array
+        cardNumber.unshift(arr[i]);
       }
     }
   } else { // If the array has an odd number of elements
-    for (let i = arr.length - 2; i >= 0; i--) { // Loop through array
-      if (i % 2 !== 0) { // If current index is Odd
-        // Multiple number at index by two and subtract 9 if it's value is 10 or more else multiply by two: add it to the new array
+    for (let i = arr.length - 2; i >= 0; i--) {
+      // For ODD indices, double value at index, if 10 of more, subtract 9 - unshift. For EVEN indicies, add value at index to array.
+      if (i % 2 !== 0) {
         arr[i] * 2 > 9 ? cardNumber.unshift(arr[i] * 2 - 9) : cardNumber.unshift(arr[i] * 2)
       } else {
-        cardNumber.unshift(arr[i]); // If index id odd, simply add number at index to new array
+        cardNumber.unshift(arr[i]);
       }
     }
   }
-  // Return true if all elements, divided by 10 leaves no remainder else return false.
   return cardNumber.reduce((accumulator, currentValue) => accumulator + currentValue) % 10 === 0 ? true : false;
 }
 
@@ -61,8 +61,10 @@ const findInvalidCards = arr => {
   // Loop through each array in the batch; add to return Array if invalid by calling validateCred
   arr.forEach(array => {
     if (validateCred(array) === false) {
-      returnArray.push(array)}});
-    return returnArray; // Return all invalid card numbers
+      returnArray.push(array)
+    }
+  });
+  return returnArray; // Return all invalid card numbers
 };
 
 
@@ -72,7 +74,7 @@ const invalidCardCompanies = arr => {
   const invalidCard = findInvalidCards(arr);
   const firstDigit = [];
   const cardCompanies = [];
-  
+
   invalidCard.forEach(array => {
     if (!firstDigit.includes(array[0])) {
       firstDigit.push(array[0])
